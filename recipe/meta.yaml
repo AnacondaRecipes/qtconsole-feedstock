@@ -14,6 +14,7 @@ build:
   script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
+  skip: True  # [ppc64le]
 
 requirements:
   host:
