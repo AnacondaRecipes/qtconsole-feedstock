@@ -33,7 +33,8 @@ requirements:
 
 test:
   commands:
-    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
+    - jupyter qtconsole --help                                              # [win]
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'  # [linux]
 
   imports:
     - qtconsole
