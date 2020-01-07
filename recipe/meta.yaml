@@ -10,7 +10,7 @@ source:
 
 build:
   noarch: python
-  number: 0
+  number: 1
   script: "{{ PYTHON }} -m pip install . --no-deps -vv"
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
@@ -29,6 +29,11 @@ requirements:
     - jupyter_client >=4.1
     - pygments
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
+
+app:
+  entry: jupyter-qtconsole
+  summary: Jupyter Qt Console
+  type: desk
 
 test:
   commands:
