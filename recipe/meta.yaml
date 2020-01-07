@@ -30,6 +30,11 @@ requirements:
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - qtpy
 
+app:
+  entry: jupyter-qtconsole
+  summary: Jupyter Qt Console
+  type: desk
+
 test:
   commands:
     - jupyter qtconsole --help                                              # [win]
