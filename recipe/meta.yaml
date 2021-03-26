@@ -1,4 +1,4 @@
-{% set version = "5.0.2" %}
+{% set version = "5.0.3" %}
 
 package:
   name: qtconsole
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/q/qtconsole/qtconsole-{{ version }}.tar.gz
-  sha256: 404994edfe33c201d6bd0c4bd501b00c16125071573c938533224992bea0b30f
+  sha256: c091a35607d2a2432e004c4a112d241ce908086570cf68594176dd52ccaa212d
 
 build:
   noarch: python
@@ -30,9 +30,15 @@ requirements:
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - qtpy
 
+app:
+  entry: jupyter-qtconsole
+  summary: Jupyter Qt Console
+  type: desk
+
 test:
   commands:
-    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
+    - jupyter qtconsole --help                                              # [win]
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'  # [linux]
 
   imports:
     - qtconsole
