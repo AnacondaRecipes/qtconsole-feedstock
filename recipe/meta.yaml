@@ -19,6 +19,8 @@ requirements:
   host:
     - python >=3.6
     - pip
+    - wheel
+    - setuptools
   run:
     - python >=3.6
     - pyqt
