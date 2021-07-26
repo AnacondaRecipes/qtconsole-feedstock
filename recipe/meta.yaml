@@ -41,7 +41,7 @@ app:
 test:
   commands:
     - jupyter qtconsole --help                                              # [win]
-    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'  # [linux]
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'  # [linux and not aarch64]
 
   imports:
     - qtconsole
