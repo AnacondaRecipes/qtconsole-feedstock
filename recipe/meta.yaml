@@ -39,7 +39,11 @@ app:
   type: desk
 
 test:
+  requires:
+    - pip
+
   commands:
+    - pip check
     - jupyter qtconsole --help                                              # [win]
     - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'  # [linux and not aarch64]
 
