@@ -14,7 +14,7 @@ build:
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
-  skip: true  # [s390x and ppc64le]
+  skip: true  # [s390x or ppc64le]
 
 requirements:
   host:
