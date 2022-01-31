@@ -24,16 +24,6 @@ requirements:
     - pip
     - wheel
     - setuptools
-  run:
-    - python >=3.6
-    - traitlets
-    - ipython_genutils
-    - jupyter_core
-    - jupyter_client >=4.1
-    - pygments
-    - ipykernel >=4.1  # not a real dependency, but require the reference kernel
-    - qtpy
-    - pyzmq >=17.1
 
 app:
   entry: jupyter-qtconsole
@@ -47,6 +37,25 @@ test:
 
 outputs:
   - name: qtconsole-base
+      build:
+      noarch: python
+    requirements:
+      host:
+        - python
+      run:
+        - python >=3.6
+        - traitlets
+        - ipython_genutils
+        - jupyter_core
+        - jupyter_client >=4.1
+        - pygments
+        - ipykernel >=4.1  # not a real dependency, but require the reference kernel
+        - qtpy
+        - pyzmq >=17.1
+    test:
+      requires:
+        - python <3.10
+
   - name: qtconsole
     build:
       noarch: python
