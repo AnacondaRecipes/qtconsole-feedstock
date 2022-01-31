@@ -46,6 +46,7 @@ test:
     - qtconsole
     - qtconsole.tests
   requires:
+    - pip
     - python <3.10
   commands:
     - pip check
