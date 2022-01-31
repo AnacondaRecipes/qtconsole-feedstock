@@ -24,6 +24,17 @@ requirements:
     - pip
     - wheel
     - setuptools
+  run:
+    - python >=3.6
+    - ipykernel >=4.1  # not a real dependency, but require the reference kernel
+    - ipython_genutils
+    - jupyter_client >=4.1
+    - jupyter_core
+    - pygments
+    - pyqt
+    - pyzmq >=17.1
+    - qtpy
+    - traitlets
 
 app:
   entry: jupyter-qtconsole
@@ -34,46 +45,12 @@ test:
   imports:
     - qtconsole
     - qtconsole.tests
-
-outputs:
-  - name: qtconsole-base
-      build:
-      noarch: python
-    requirements:
-      host:
-        - python
-      run:
-        - python >=3.6
-        - traitlets
-        - ipython_genutils
-        - jupyter_core
-        - jupyter_client >=4.1
-        - pygments
-        - ipykernel >=4.1  # not a real dependency, but require the reference kernel
-        - qtpy
-        - pyzmq >=17.1
-    test:
-      requires:
-        - python <3.10
-
-  - name: qtconsole
-    build:
-      noarch: python
-    requirements:
-      host:
-        - python
-      run:
-        - python >=3.6
-        - {{ pin_subpackage('qtconsole-base', max_pin='x.x.x') }}
-        - pyqt
-    test:
-      requires:
-        - pip
-        - python <3.10
-      commands:
-        - pip check
-        - jupyter qtconsole --help  
-        - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
+  requires:
+    - python <3.10
+  commands:
+    - pip check
+    - jupyter qtconsole --help  
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
 
 about:
   home: http://jupyter.org
