@@ -63,7 +63,7 @@ outputs:
         - python <3.10
       commands:
         - pip check
-        - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
+        - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx)]
 about:
   home: http://jupyter.org
   license: BSD-3-Clause
