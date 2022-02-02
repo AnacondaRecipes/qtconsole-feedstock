@@ -2,7 +2,7 @@
 {% set version = "5.2.2" %}
 
 package:
-  name: {{ name|lower }}-base
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
@@ -31,6 +31,7 @@ requirements:
     - jupyter_client >=4.1
     - jupyter_core
     - pygments
+    - pyqt
     - pyzmq >=17.1
     - qtpy
     - traitlets
@@ -44,26 +45,13 @@ test:
   imports:
     - qtconsole
     - qtconsole.tests
+  requires:
+    - pip
+    - python <3.10
+  commands:
+    - pip check
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx)]
 
-outputs:
-  - name: qtconsole-base
-  - name: qtconsole
-    build:
-      noarch: python
-    requirements:
-      host:
-        - python
-      run:
-        - python >=3.6
-        - {{ pin_subpackage('qtconsole-base', max_pin='x.x.x') }}
-        - pyqt
-    test:
-      requires:
-        - pip
-        - python <3.10
-      commands:
-        - pip check
-        - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx)]
 about:
   home: http://jupyter.org
   license: BSD-3-Clause
