@@ -13,7 +13,6 @@ build:
   noarch: python
   number: 0
   # Not available on s390x, ppc64le due to missing qt.
-  skip: true  # [s390x or ppc64le]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
@@ -25,7 +24,7 @@ requirements:
     - wheel
     - setuptools
   run:
-    - python >=3.6
+    - python >=3.7
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - ipython_genutils
     - jupyter_client >=4.1
@@ -33,7 +32,7 @@ requirements:
     - pygments
     - pyqt
     - pyzmq >=17.1
-    - qtpy
+    - qtpy >=2.0.1
     - traitlets
 
 app:
@@ -47,7 +46,6 @@ test:
     - qtconsole.tests
   requires:
     - pip
-    - python <3.10
   commands:
     - pip check
     - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx)]
