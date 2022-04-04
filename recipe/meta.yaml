@@ -1,5 +1,5 @@
 {% set name = "qtconsole" %}
-{% set version = "5.2.2" %}
+{% set version = "5.3.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,13 +7,12 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/qtconsole-{{ version }}.tar.gz
-  sha256: 8f9db97b27782184efd0a0f2d57ea3bd852d053747a2e442a9011329c082976d
+  sha256: 8e3520fdc75e46abc4cc6cffeca16fa2652754109b8ae839fa28e27d1eba5625
 
 build:
   noarch: python
   number: 0
   # Not available on s390x, ppc64le due to missing qt.
-  skip: true  # [s390x or ppc64le]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
@@ -25,7 +24,7 @@ requirements:
     - wheel
     - setuptools
   run:
-    - python >=3.6
+    - python >=3.7
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - ipython_genutils
     - jupyter_client >=4.1
@@ -33,7 +32,7 @@ requirements:
     - pygments
     - pyqt
     - pyzmq >=17.1
-    - qtpy
+    - qtpy >=2.0.1
     - traitlets
 
 app:
@@ -47,7 +46,6 @@ test:
     - qtconsole.tests
   requires:
     - pip
-    - python <3.10
   commands:
     - pip check
     - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx)]
