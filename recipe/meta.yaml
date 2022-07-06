@@ -12,6 +12,7 @@ source:
 build:
   number: 0
   skip: True  # [py<37]
+  skip: True  # [ppc64le or s390x or (py==310 and (osx or aarch64))]
   # Not available on s390x, ppc64le due to missing qt.
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
