@@ -49,7 +49,7 @@ test:
     - pip
   commands:
     - pip check
-    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx)]
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx or win)]
 
 about:
   home: https://jupyter.org
