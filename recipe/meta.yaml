@@ -1,18 +1,20 @@
 {% set name = "qtconsole" %}
-{% set version = "5.3.0" %}
+{% set version = "5.3.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/qtconsole-{{ version }}.tar.gz
-  sha256: 8e3520fdc75e46abc4cc6cffeca16fa2652754109b8ae839fa28e27d1eba5625
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: b73723fac43938b684dcb237a88510dc7721c43a726cea8ade179a2927c0a2f3
 
 build:
-  noarch: python
   number: 0
+  skip: True  # [py<37]
   # Not available on s390x, ppc64le due to missing qt.
+  # Not available on osx and aarch64 for python 3.10 due to missing pyqt.
+  skip: True  # [ppc64le or s390x or (py==310 and (osx or aarch64))]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
@@ -24,7 +26,7 @@ requirements:
     - wheel
     - setuptools
   run:
-    - python >=3.7
+    - python
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - ipython_genutils
     - jupyter_client >=4.1
@@ -33,7 +35,7 @@ requirements:
     - pyqt
     - pyzmq >=17.1
     - qtpy >=2.0.1
-    - traitlets
+    - traitlets !=5.2.1,!=5.2.2
 
 app:
   entry: jupyter-qtconsole
@@ -48,10 +50,10 @@ test:
     - pip
   commands:
     - pip check
-    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx)]
+    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx or win)]
 
 about:
-  home: http://jupyter.org
+  home: https://jupyter.org
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
