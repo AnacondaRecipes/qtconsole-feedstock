@@ -11,6 +11,7 @@ source:
 
 build:
   number: 0
+  # Trugger 1
   skip: True  # [py<37]
   # Not available on s390x, ppc64le due to missing qt.
   # Not available on osx and aarch64 for python 3.10 due to missing pyqt.
