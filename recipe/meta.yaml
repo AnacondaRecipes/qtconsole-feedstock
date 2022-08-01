@@ -14,8 +14,7 @@ build:
   # Trugger 1
   skip: True  # [py<37]
   # Not available on s390x, ppc64le due to missing qt.
-  # Not available on osx and aarch64 for python 3.10 due to missing pyqt.
-  skip: True  # [ppc64le or s390x or (py==310 and (osx or aarch64))]
+  skip: True  # [ppc64le or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
