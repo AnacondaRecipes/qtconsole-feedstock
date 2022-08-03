@@ -9,17 +9,19 @@ source:
   sha256: 654f423662e7dfe6a9b26fac8ec76aedcf742c339909ac49f1f0c1a1b744bcd1
 
 build:
-  noarch: python
-  number: 1
+  noarch: python  # [not win]
+  number: 2
   script: "{{ PYTHON }} -m pip install . --no-deps -vv"
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
-  skip: True  # [ppc64le]
+  skip: True  # [linux and (s390x or ppc64le)]
 
 requirements:
   host:
     - python
     - pip
+    - setuptools
+    - wheel
   run:
     - python
     - pyqt
