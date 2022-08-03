@@ -10,11 +10,10 @@ source:
   sha256: b73723fac43938b684dcb237a88510dc7721c43a726cea8ade179a2927c0a2f3
 
 build:
-  number: 0
+  number: 1
   skip: True  # [py<37]
   # Not available on s390x, ppc64le due to missing qt.
-  # Not available on osx and aarch64 for python 3.10 due to missing pyqt.
-  skip: True  # [ppc64le or s390x or (py==310 and (osx or aarch64))]
+  skip: True  # [ppc64le or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
@@ -50,7 +49,10 @@ test:
     - pip
   commands:
     - pip check
-    - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx or win)]
+    # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
+    # This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
+    # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
+    #- DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx or win)]
 
 about:
   home: https://jupyter.org
