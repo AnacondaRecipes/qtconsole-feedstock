@@ -34,7 +34,7 @@ requirements:
     - pyqt
     - pyzmq >=17.1
     - qtpy >=2.0.1
-    - traitlets !=5.2.1,!=5.2.2
+    - traitlets !=5.2.1, !=5.2.2  # Skip traitlets versions that break Qtconsole on Windows
 
 app:
   entry: jupyter-qtconsole
@@ -60,6 +60,7 @@ about:
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
+  license_url: https://github.com/jupyter/qtconsole/blob/master/LICENSE
   summary: Jupyter Qt console
   description: |
     A rich Qt-based console for working with Jupyter kernels, supporting rich
