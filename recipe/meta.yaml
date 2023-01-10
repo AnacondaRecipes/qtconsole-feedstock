@@ -33,6 +33,7 @@ requirements:
     - pygments
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - qtpy >=2.0.1
+    - pyqt  # not a dependency but is still required for install as qt depends on pyqt https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
 
 app:
   entry: jupyter-qtconsole
