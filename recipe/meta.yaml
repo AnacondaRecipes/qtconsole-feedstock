@@ -26,7 +26,7 @@ requirements:
     - setuptools
   run:
     - python
-    - traitlets !=5.2.1,!=5.2.2'
+    - traitlets
     - ipython_genutils
     - jupyter_core
     - jupyter_client >=4.1
