@@ -26,7 +26,7 @@ requirements:
     - setuptools
   run:
     - python
-    - traitlets
+    - traitlets !=5.2.1,!=5.2.2'
     - ipython_genutils
     - jupyter_core
     - jupyter_client >=4.1
@@ -50,8 +50,9 @@ test:
     # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
     # This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
-    #- DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx or win)]
-
+    # - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
+    - jupyter-qtconsole = qtconsole.qtconsoleapp:main
+  
 about:
   home: https://jupyter.org
   license: BSD-3-Clause
