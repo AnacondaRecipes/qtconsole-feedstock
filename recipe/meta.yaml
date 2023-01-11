@@ -26,14 +26,13 @@ requirements:
     - setuptools
   run:
     - python
-    - traitlets
     - ipython_genutils
     - jupyter_core
     - jupyter_client >=4.1
     - pygments
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - qtpy >=2.0.1
-    - pyqt  # not a dependency but is still required for install as qt depends on pyqt https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
+    - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for pyqt https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
 
 app:
   entry: jupyter-qtconsole
