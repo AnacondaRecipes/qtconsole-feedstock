@@ -1,5 +1,5 @@
 {% set name = "qtconsole" %}
-{% set version = "5.3.2" %}
+{% set version = "5.4.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 8eadf012e83ab018295803c247c6ab7eacd3d5ab1e1d88a0f37fdcfdab9295a3
+  sha256: 57748ea2fd26320a0b77adba20131cfbb13818c7c96d83fafcb110ff55f58b35
 
 build:
   number: 0
@@ -26,13 +26,13 @@ requirements:
     - setuptools
   run:
     - python
-    - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - ipython_genutils
-    - jupyter_client >=4.1
+    - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - jupyter_core
+    - jupyter_client >=4.1
     - pygments
-    - pyqt
-    - pyzmq >=17.1
+    - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
+    - pyzmq>=17.1
     - qtpy >=2.0.1
     - traitlets !=5.2.1, !=5.2.2  # Skip traitlets versions that break Qtconsole on Windows
 
@@ -52,7 +52,7 @@ test:
     # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
     # This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
-    #- DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help' # [not ((linux and aarch64) or osx or win)]
+    # - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
     - jupyter qtconsole --help  # [win or osx]
 
 about:
