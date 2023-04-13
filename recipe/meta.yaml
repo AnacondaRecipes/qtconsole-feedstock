@@ -14,7 +14,7 @@ build:
   skip: True  # [py<37]
   # Not available on s390x, ppc64le due to missing qt.
   skip: True  # [ppc64le or s390x]
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
 
@@ -32,9 +32,10 @@ requirements:
     - jupyter_client >=4.1
     - pygments
     - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
-    - pyzmq>=17.1
+    - pyzmq >=17.1
     - qtpy >=2.0.1
     - traitlets !=5.2.1, !=5.2.2  # Skip traitlets versions that break Qtconsole on Windows
+    - packaging
 
 app:
   entry: jupyter-qtconsole
@@ -61,7 +62,6 @@ about:
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
-  license_url: https://github.com/jupyter/qtconsole/blob/master/LICENSE
   summary: Jupyter Qt console
   description: |
     A rich Qt-based console for working with Jupyter kernels, supporting rich
@@ -70,9 +70,9 @@ about:
     a number of enhancements only possible in a GUI, such as inline figures,
     proper multiline editing with syntax highlighting, graphical calltips, and
     more.
-  doc_url: https://qtconsole.readthedocs.org/en/stable/
+  doc_url: https://qtconsole.readthedocs.io/en/stable/
   dev_url: https://github.com/jupyter/qtconsole
-  doc_source_url: https://github.com/jupyter/qtconsole/tree/{{ version }}/docs
+  
 
 extra:
   recipe-maintainers:
