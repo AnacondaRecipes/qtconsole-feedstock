@@ -1,17 +1,17 @@
 {% set name = "qtconsole" %}
-{% set version = "5.4.2" %}
+{% set version = "5.5.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: dc935780da276a2ab31a7a08a8cf327a2ea47fa27e21d485073251a7eeb16167
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/qtconsole-{{ version }}.tar.gz
+  sha256: ea8b4a07d7dc915a1b1238fbfe2c9aea570640402557b64615e09a4bc60df47c
 
 build:
   number: 0
-  skip: True  # [py<37]
+  skip: True  # [py<38]
   # Not available on s390x, ppc64le due to missing qt.
   skip: True  # [ppc64le or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
@@ -26,14 +26,13 @@ requirements:
     - setuptools
   run:
     - python
-    - ipython_genutils
     - ipykernel >=4.1  # not a real dependency, but require the reference kernel
     - jupyter_core
     - jupyter_client >=4.1
     - pygments
     - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
     - pyzmq >=17.1
-    - qtpy >=2.0.1
+    - qtpy >=2.4.0
     - traitlets !=5.2.1, !=5.2.2  # Skip traitlets versions that break Qtconsole on Windows
     - packaging
 
@@ -48,14 +47,13 @@ test:
     - qtconsole.tests
   requires:
     - pip
-    - typing_extensions
   commands:
     - pip check
     # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
     # This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
     # - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
-    - jupyter qtconsole --help  # [win or osx]
+    - jupyter qtconsole --help # [win or osx]
 
 about:
   home: https://jupyter.org
@@ -70,7 +68,7 @@ about:
     a number of enhancements only possible in a GUI, such as inline figures,
     proper multiline editing with syntax highlighting, graphical calltips, and
     more.
-  doc_url: https://qtconsole.readthedocs.io/en/stable/
+  doc_url: https://qtconsole.readthedocs.io
   dev_url: https://github.com/jupyter/qtconsole
   
 
