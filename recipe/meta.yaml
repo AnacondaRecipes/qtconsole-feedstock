@@ -1,5 +1,5 @@
 {% set name = "qtconsole" %}
-{% set version = "5.5.1" %}
+{% set version = "5.6.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,13 +7,12 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/qtconsole-{{ version }}.tar.gz
-  sha256: a0e806c6951db9490628e4df80caec9669b65149c7ba40f9bf033c025a5b56bc
+  sha256: 4c82120a3b53a3d36e3f76e6a1a26ffddf4e1ce2359d56a19889c55e1d73a436
 
 build:
   number: 0
-  skip: True  # [py<38]
   # Not available on s390x, ppc64le due to missing qt.
-  skip: True  # [ppc64le or s390x]
+  skip: True  # [py<38 or ppc64le or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
@@ -31,7 +30,6 @@ requirements:
     - jupyter_client >=4.1
     - pygments
     - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
-    - pyzmq >=17.1
     - qtpy >=2.4.0
     - traitlets !=5.2.1, !=5.2.2  # Skip traitlets versions that break Qtconsole on Windows
     - packaging
@@ -47,6 +45,10 @@ test:
     - qtconsole.tests
   requires:
     - pip
+    - pytest
+    - flaky
+  source_files:
+    - qtconsole/tests
   commands:
     - pip check
     # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
@@ -54,6 +56,9 @@ test:
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
     # - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
     - jupyter qtconsole --help # [win or osx]
+    # Missing pytest-qt for some Qt test fixtures.
+    # GUI widget tests crash and burn in CI on OSX.
+    - pytest -v qtconsole/tests -k "not (test_scroll or test_input or test_debug or test_restart or test_link_handling)"  # [not osx]
 
 about:
   home: https://jupyter.org
