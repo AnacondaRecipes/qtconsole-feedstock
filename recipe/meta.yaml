@@ -10,7 +10,7 @@ source:
   sha256: 5cad1c7e6c75d3ef8143857fd2ed28062b4b92b933c2cc328252d18a9cfd0be5
 
 build:
-  number: 0
+  number: 1
   # Not available on s390x, ppc64le due to missing qt.
   skip: True  # [py<38 or ppc64le or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
