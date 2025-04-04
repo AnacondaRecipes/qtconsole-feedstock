@@ -29,7 +29,7 @@ requirements:
     - jupyter_core
     - jupyter_client >=4.1
     - pygments
-    - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
+    - pyqt ==5.* # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
     - qtpy >=2.4.0
     - traitlets !=5.2.1, !=5.2.2  # Skip traitlets versions that break Qtconsole on Windows
     - packaging
