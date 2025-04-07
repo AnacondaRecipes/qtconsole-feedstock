@@ -29,7 +29,7 @@ requirements:
     - jupyter_core
     - jupyter_client >=4.1
     - pygments
-    - pyqt ==5.* # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
+    - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
     - qtpy >=2.4.0
     - traitlets !=5.2.1, !=5.2.2  # Skip traitlets versions that break Qtconsole on Windows
     - packaging
@@ -51,6 +51,7 @@ test:
     - qtconsole/tests
   commands:
     - pip check
+    - export QT_QPA_PLATFORM=offscreen  # [unix]
     # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
     # This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
