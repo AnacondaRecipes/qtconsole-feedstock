@@ -40,6 +40,9 @@ app:
   type: desk
 
 test:
+  imports:
+    - qtconsole
+    - qtconsole.tests
   requires:
     - pip
     - pytest
@@ -52,12 +55,6 @@ test:
     - qtconsole/tests
   commands:
     - pip check
-    # Add runtime path of libEGL.so.1 so Qt libraries can find it as they're loaded in.
-    # This must be done before the python interpreter starts up.
-    - export LD_LIBRARY_PATH="$PREFIX/x86_64-conda-linux-gnu/sysroot/usr/lib64:${LD_LIBRARY_PATH}"  # [linux and x86_64]
-    - export LD_LIBRARY_PATH="$PREFIX/aarch64-conda-linux-gnu/sysroot/usr/lib64:${LD_LIBRARY_PATH}"  # [linux and aarch64]
-    - python -c "import qtconsole; print('Success')"
-    - python -c "import qtconsole.tests; print('Success')"
     # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
     # This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
@@ -92,5 +89,3 @@ extra:
     - minrk
     - takluyver
     - ocefpaf
-  skip-lints:
-    - missing_imports_or_run_test_py
