@@ -75,6 +75,7 @@ test:
     - pyqt ==5.*
     - pytest-qt
     - pytest-asyncio
+    - pytest-timeout
   source_files:
     - qtconsole/tests
   commands:
@@ -85,9 +86,12 @@ test:
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
     # - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
     - jupyter qtconsole --help  # [win or osx]
-    # Missing pytest-qt for some Qt test fixtures.
-    # GUI widget tests crash and burn in CI on OSX.
-    - pytest -v qtconsole/tests -k "not (test_scroll or test_input or test_debug or test_restart or test_link_handling)"  # [not osx]
+    # Setup timeout
+    # QT witout GUI
+    # All these need for preventing freezing during pipeline build
+    - set "QT_QPA_PLATFORM=offscreen"                  # [win]
+    - export QT_QPA_PLATFORM=offscreen                 # [unix]
+    - pytest -v qtconsole/tests -ra --timeout=300 --timeout-method=thread -k "not slow and not (test_scroll or test_input or test_debug or test_restart or test_link_handling)"
 
 about:
   home: https://jupyter.org
