@@ -13,7 +13,7 @@ build:
   number: 0
   # Not available on s390x, ppc64le due to missing qt.
   skip: true  # [py<39 or ppc64le or s390x]
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
 
@@ -29,7 +29,9 @@ requirements:
     - jupyter_core
     - jupyter_client >=4.1
     - pygments
-    - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
+    # The Qt console requires Qt, such as PyQt6, PySide6, PyQt5, PySide2.
+    # Drop pyqt in run: avoids constraining environments that use PySide6/PyQt6
+    # - pyqt
     - qtpy >=2.4.0
     - traitlets !=5.2.1,!=5.2.2
     - packaging
@@ -44,6 +46,25 @@ test:
   imports:
     - qtconsole
     - qtconsole.tests
+    - qtconsole.ansi_code_processor
+    - qtconsole.base_frontend_mixin
+    - qtconsole.client
+    - qtconsole.completion_widget
+    - qtconsole.console_widget
+    - qtconsole.frontend_widget
+    - qtconsole.inprocess
+    - qtconsole.jupyter_widget
+    - qtconsole.kill_ring
+    - qtconsole.mainwindow
+    - qtconsole.manager
+    - qtconsole.qstringhelpers
+    - qtconsole.qtconsoleapp
+    - qtconsole.rich_jupyter_widget
+    - qtconsole.rich_text
+    - qtconsole.styles
+    - qtconsole.svg
+    - qtconsole.usage
+    - qtconsole.util
   requires:
     - pip
     - pytest
@@ -56,6 +77,7 @@ test:
     - qtconsole/tests
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
     # This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
