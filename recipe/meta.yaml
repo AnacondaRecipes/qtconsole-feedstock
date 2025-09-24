@@ -1,19 +1,19 @@
 {% set name = "qtconsole" %}
-{% set version = "5.6.1" %}
+{% set version = "5.7.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/qtconsole-{{ version }}.tar.gz
-  sha256: 5cad1c7e6c75d3ef8143857fd2ed28062b4b92b933c2cc328252d18a9cfd0be5
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/qtconsole-{{ version }}.tar.gz
+  sha256: 0d33371ce9ef554c7022ee300564ba9ffbd615e304ee615f6769d4068e063171
 
 build:
-  number: 1
+  number: 0
   # Not available on s390x, ppc64le due to missing qt.
-  skip: True  # [py<38 or ppc64le or s390x]
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  skip: true  # [py<39 or ppc64le or s390x]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
 
@@ -25,14 +25,17 @@ requirements:
     - setuptools
   run:
     - python
-    - ipykernel >=4.1  # not a real dependency, but require the reference kernel
+    - ipykernel >=4.1
     - jupyter_core
     - jupyter_client >=4.1
     - pygments
-    - pyqt  # not a dependency listed in setup.py but is still a runtime requirement for qtconsole https://qtconsole.readthedocs.io/en/stable/installation.html#installing-qt-if-needed
+    # The Qt console requires Qt, such as PyQt6, PySide6, PyQt5, PySide2.
+    # Drop pyqt in run: avoids constraining environments that use PySide6/PyQt6
+    # - pyqt
     - qtpy >=2.4.0
-    - traitlets !=5.2.1, !=5.2.2  # Skip traitlets versions that break Qtconsole on Windows
+    - traitlets !=5.2.1,!=5.2.2
     - packaging
+    - ipython_pygments_lexers
 
 app:
   entry: jupyter-qtconsole
@@ -43,6 +46,25 @@ test:
   imports:
     - qtconsole
     - qtconsole.tests
+    - qtconsole.ansi_code_processor
+    - qtconsole.base_frontend_mixin
+    - qtconsole.client
+    - qtconsole.completion_widget
+    - qtconsole.console_widget
+    - qtconsole.frontend_widget
+    - qtconsole.inprocess
+    - qtconsole.jupyter_widget
+    - qtconsole.kill_ring
+    - qtconsole.mainwindow
+    - qtconsole.manager
+    - qtconsole.qstringhelpers
+    - qtconsole.qtconsoleapp
+    - qtconsole.rich_jupyter_widget
+    - qtconsole.rich_text
+    - qtconsole.styles
+    - qtconsole.svg
+    - qtconsole.usage
+    - qtconsole.util
   requires:
     - pip
     - pytest
@@ -51,18 +73,25 @@ test:
     # ImportError: libEGL.so.1: cannot open shared object file: No such file or directory
     # tested locally, works fine
     - pyqt ==5.*
+    - pytest-qt
+    - pytest-asyncio
+    - pytest-timeout
   source_files:
     - qtconsole/tests
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     # 2022/8/1: Could not find the Qt platform plugin "xcb" in ""
     # This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
     # Available platform plugins are: eglfs, minimal, minimalegl, offscreen, vnc, webgl.
     # - DISPLAY=localhost:1.0 xvfb-run -a bash -c 'jupyter qtconsole --help'
-    - jupyter qtconsole --help # [win or osx]
-    # Missing pytest-qt for some Qt test fixtures.
-    # GUI widget tests crash and burn in CI on OSX.
-    - pytest -v qtconsole/tests -k "not (test_scroll or test_input or test_debug or test_restart or test_link_handling)"  # [not osx]
+    - jupyter qtconsole --help  # [win or osx]
+    # Setup timeout
+    # QT witout GUI
+    # All these need for preventing freezing during pipeline build
+    - set "QT_QPA_PLATFORM=offscreen"                  # [win]
+    - export QT_QPA_PLATFORM=offscreen                 # [unix]
+    - pytest -v qtconsole/tests -ra --timeout=300 --timeout-method=thread -k "not slow and not (test_scroll or test_input or test_debug or test_restart or test_link_handling)"
 
 about:
   home: https://jupyter.org
@@ -79,7 +108,6 @@ about:
     more.
   doc_url: https://qtconsole.readthedocs.io
   dev_url: https://github.com/jupyter/qtconsole
-
 
 extra:
   recipe-maintainers:
