@@ -1,21 +1,20 @@
 {% set name = "qtconsole" %}
-{% set version = "5.7.0" %}
+{% set version = "5.7.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/qtconsole-{{ version }}.tar.gz
-  sha256: 0d33371ce9ef554c7022ee300564ba9ffbd615e304ee615f6769d4068e063171
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 5f0944cdaad2a0fca4aedf598352889b172e8dc7f57354bdd097ed92c6563a01
 
 build:
   number: 0
-  # Not available on s390x, ppc64le due to missing qt.
-  skip: true  # [py<39 or ppc64le or s390x]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   entry_points:
     - jupyter-qtconsole = qtconsole.qtconsoleapp:main
+  skip: true  # [py<39]
 
 requirements:
   host:
@@ -25,17 +24,14 @@ requirements:
     - setuptools
   run:
     - python
-    - ipykernel >=4.1
+    - traitlets !=5.2.1,!=5.2.2
     - jupyter_core
     - jupyter_client >=4.1
     - pygments
-    # The Qt console requires Qt, such as PyQt6, PySide6, PyQt5, PySide2.
-    # Drop pyqt in run: avoids constraining environments that use PySide6/PyQt6
-    # - pyqt
-    - qtpy >=2.4.0
-    - traitlets !=5.2.1,!=5.2.2
-    - packaging
+    - ipykernel >=4.1
     - ipython_pygments_lexers
+    - qtpy >=2.4.0
+    - packaging
 
 app:
   entry: jupyter-qtconsole
