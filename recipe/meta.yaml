@@ -1,5 +1,5 @@
 {% set name = "qtconsole" %}
-{% set version = "5.7.1" %}
+{% set version = "5.7.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 5f0944cdaad2a0fca4aedf598352889b172e8dc7f57354bdd097ed92c6563a01
+  sha256: 27b485b9161925924c1d8e78e66bb342e6e3bc49bf675d0a67b49bad9c291521
 
 build:
   number: 0
