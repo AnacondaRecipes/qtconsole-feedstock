@@ -33,11 +33,6 @@ requirements:
     - qtpy >=2.4.0
     - packaging
 
-app:
-  entry: jupyter-qtconsole
-  summary: Jupyter Qt Console
-  type: desk
-
 test:
   imports:
     - qtconsole
@@ -85,8 +80,8 @@ test:
     # Setup timeout
     # QT witout GUI
     # All these need for preventing freezing during pipeline build
-    - set "QT_QPA_PLATFORM=offscreen"                  # [win]
-    - export QT_QPA_PLATFORM=offscreen                 # [unix]
+    - set "QT_QPA_PLATFORM=offscreen"  # [win]
+    - export QT_QPA_PLATFORM=offscreen  # [unix]
     #- pytest -v qtconsole/tests -ra --timeout=300 --timeout-method=thread -k "not slow and not (test_scroll or test_input or test_debug or test_restart or test_link_handling)"
 
 about:
@@ -113,3 +108,8 @@ extra:
     - minrk
     - takluyver
     - ocefpaf
+
+app:
+  entry: jupyter-qtconsole
+  summary: Jupyter Qt Console
+  type: desk
